@@ -14,7 +14,7 @@ def show_confirmation_dialog(note_count: int, browser: Browser):
     reply = QMessageBox.question(browser, ACTION_NAME, f'Are you sure you want to generate example sentences for {note_count} notes?')
     return reply == QMessageBox.StandardButton.Yes
 
-def show_success_dialog():
+def show_success_dialog(note_count: int):
     dialog = QDialog()
 
     # Layout
@@ -74,7 +74,7 @@ def generate_sentences(selected_nids: Sequence, browser: Browser):
         return col.update_notes(changed_notes)
 
     operation = CollectionOp(parent=browser, op=do)
-    operation.success(lambda _: show_success_dialog())
+    operation.success(lambda _: show_success_dialog(note_count))
     operation.run_in_background()
 
 def setup_menu_items(browser: Browser):
