@@ -51,7 +51,7 @@ def generate_sentences(selected_nids: Sequence, browser: Browser):
 
     def do(col: Collection):
         changed_notes = []
-        note_index = 1
+        note_index = 0
 
         for nid in selected_nids:
             note = col.get_note(nid)
