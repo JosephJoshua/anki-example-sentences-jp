@@ -54,16 +54,23 @@ def generate_sentences(selected_nids: Sequence, browser: Browser):
         note_index = 0
 
         for nid in selected_nids:
+            fields = get_fields_from_note_type(mw.col.get_note(nid))
+
+            if fields is None:
+                continue
+
+            word_field = fields['word']
+            sentence_field = fields['sentence']
+
             note = col.get_note(nid)
 
-            # TODO: Allow users to change the fields
-            if fill_note(note, 'Front', 'Sentence'):
+            if fill_note(note, word_field, sentence_field):
                 changed_notes.append(note)
 
             # Update progress bar
             aqt.mw.taskman.run_on_main(
                 lambda: aqt.mw.progress.update(
-                    label=f"{note['Front']} ({note_index}/{note_count})",
+                    label=f"{note[word_field]} ({note_index}/{note_count})",
                     value=note_index,
                     max=note_count
                 )
