@@ -5,6 +5,7 @@ from aqt.qt import *
 from aqt.browser import Browser
 
 from .utils import *
+from .example_sentences import fill_note
 
 ACTION_NAME = 'Bulk-add Example Sentences'
 
@@ -14,6 +15,8 @@ def generate_sentences(selected_nids: Sequence):
 
     for nid in selected_nids:
         note = mw.col.get_note(nid)
+        if fill_note(note, 'Front', 'Sentence'):
+            note.flush()
 
     mw.progress.finish()
     mw.reset()
