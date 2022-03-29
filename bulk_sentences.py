@@ -84,7 +84,7 @@ def generate_sentences(selected_nids: Sequence, browser: Browser):
     operation.success(lambda _: show_success_dialog(note_count))
     operation.run_in_background()
 
-def setup_menu_items(browser: Browser):
+def add_menu_items(browser: Browser):
     # Creates a menu item and adds it under the 'Edit' category
     action = QAction(ACTION_NAME, browser)
     qconnect(action.triggered, lambda: generate_sentences(browser.selected_notes(), browser))
@@ -93,7 +93,7 @@ def setup_menu_items(browser: Browser):
 def init():
     if ANKI21_VERSION < 45:
         from anki.hooks import addHook
-        addHook('browser.setupMenus', setup_menu_items)
+        addHook('browser.setupMenus', add_menu_items)
     else:
         from aqt import gui_hooks
-        gui_hooks.browser_menus_did_init.append(setup_menu_items)
+        gui_hooks.browser_menus_did_init.append(add_menu_items)
