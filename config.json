@@ -1,4 +1,7 @@
 {
+  "auto_furigana": true,
+  "furigana_skip_numbers": true,
+  "furigana_skip_words": "",
   "fields": [
     {
       "note_type": "test",

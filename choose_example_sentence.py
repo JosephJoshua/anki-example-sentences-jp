@@ -127,7 +127,11 @@ def choose_example_sentence(parent: QWidget, note: Note, word_field: str, senten
 
     dialog = ChooseExampleSentenceDialog(note[word_field], parent)
     if dialog.exec():
-        note[sentence_field] = dialog.sentence
+        sentence = dialog.sentence
+        if should_auto_generate_furigana():
+            sentence = generate_furigana(sentence)
+
+        note[sentence_field] = sentence
         update_note(parent=parent, note=note).run_in_background()
 
 def choose_example_sentence_action(browser: Browser):

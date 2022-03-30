@@ -7,6 +7,9 @@ from anki.notes import Note
 from anki.utils import htmlToTextLine
 from aqt import mw
 
+from .furigana import generate_furigana
+from .utils import *
+
 YOUREI_URL = 'https://yourei.jp'
 
 def get_soup_instance(word: str):
@@ -76,6 +79,10 @@ def add_first_example_sentence(note: Note, word_field: str, sentence_field: str)
     soup = get_soup_instance(word)
 
     sentence = get_first_sentence_from_page(soup)
+
+    if should_auto_generate_furigana():
+        sentence = generate_furigana(sentence)
+
     note[sentence_field] = sentence
 
     return True
