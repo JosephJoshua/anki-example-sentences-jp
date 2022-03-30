@@ -1,9 +1,11 @@
+from aqt.browser.browser import Browser
 from aqt.operations import QueryOp
 from aqt.operations.note import update_note
 from aqt.qt import *
 from PyQt5 import QtCore
 
 from .example_sentences import *
+from .utils import *
 
 _ACTION_NAME = 'Choose Example Sentence'
 
@@ -104,3 +106,23 @@ def choose_example_sentence(parent: QWidget, note: Note, word_field: str, senten
     if dialog.exec():
         note[sentence_field] = dialog.sentence
         update_note(parent=parent, note=note).run_in_background()
+
+def choose_example_sentence_action(browser: Browser):
+    note = browser.mw.col.get_note(browser.card.nid)
+    fields = get_fields_from_note_type(note)
+
+    choose_example_sentence(browser, note, fields['word'], fields['sentence'])
+
+def add_menu_items(browser: Browser):
+    # Creates a menu item and adds it under the 'Edit' category
+    action = QAction('Add/Change Example Sentence', browser)
+    qconnect(action.triggered, lambda: choose_example_sentence_action(browser))
+    browser.form.menuEdit.addAction(action)
+
+def init():
+    if ANKI21_VERSION < 45:
+        from anki.hooks import addHook
+        addHook('browser.setupMenus', add_menu_items)
+    else:
+        from aqt import gui_hooks
+        gui_hooks.browser_menus_did_init.append(add_menu_items)

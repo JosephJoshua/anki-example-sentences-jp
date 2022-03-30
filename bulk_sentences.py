@@ -1,7 +1,7 @@
 from typing import Sequence
 
 from aqt import Collection
-from aqt.browser import Browser
+from aqt.browser.browser import Browser
 from aqt.operations import CollectionOp
 from aqt.qt import *
 
