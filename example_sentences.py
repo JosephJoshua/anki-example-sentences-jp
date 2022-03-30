@@ -3,9 +3,9 @@ from bs4 import BeautifulSoup
 import requests
 import urllib.parse
 
-from aqt import mw
 from anki.notes import Note
 from anki.utils import htmlToTextLine
+from aqt import mw
 
 YOUREI_URL = 'https://yourei.jp'
 
@@ -62,15 +62,14 @@ def can_fill_note(note: Note, word_field: str, sentence_field: str) -> bool:
     if not (mw.col.media.strip(note[word_field]).strip()):
         return False
 
-    # Should only fill the note if the sentence field is still empty
-    # TODO: Add support for changing the example sentences of a note
-    if len(htmlToTextLine(note[sentence_field])) == 0:
-        return True
+    return True
 
-    return False
-
-def fill_note(note: Note, word_field: str, sentence_field: str) -> bool:
+# Adds the first example sentence we find to the note
+def add_first_example_sentence(note: Note, word_field: str, sentence_field: str) -> bool:
     if not can_fill_note(note, word_field, sentence_field):
+        return False
+
+    if len(htmlToTextLine(note[sentence_field])) > 0:
         return False
 
     word = mw.col.media.strip(note[word_field])

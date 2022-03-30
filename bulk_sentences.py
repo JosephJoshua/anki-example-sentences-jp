@@ -6,7 +6,7 @@ from aqt.operations import CollectionOp
 from aqt.qt import *
 
 from .utils import *
-from .example_sentences import fill_note
+from .example_sentences import add_first_example_sentence
 
 _ACTION_NAME = 'Bulk-add Example Sentences'
 
@@ -64,7 +64,7 @@ def generate_sentences(selected_nids: Sequence, browser: Browser):
 
             note = col.get_note(nid)
 
-            if fill_note(note, word_field, sentence_field):
+            if add_first_example_sentence(note, word_field, sentence_field):
                 changed_notes.append(note)
 
             # Update progress bar

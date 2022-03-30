@@ -1,8 +1,9 @@
 from aqt.operations import QueryOp
+from aqt.operations.note import update_note
 from aqt.qt import *
 from PyQt5 import QtCore
 
-from .example_sentences import get_soup_instance, get_all_sentences_from_page
+from .example_sentences import *
 
 _ACTION_NAME = 'Choose Example Sentence'
 
@@ -23,7 +24,7 @@ class ChooseExampleSentenceDialog(QDialog):
 
         # Layout
         self.layout = QVBoxLayout()
-        self.layout.setContentsMargins(12, 12, 12, 12)
+        self.layout.setContentsMargins(12, 18, 12, 12)
         self.layout.setSpacing(16)
 
         # Heading text
@@ -40,10 +41,9 @@ class ChooseExampleSentenceDialog(QDialog):
         # List view
         list_font = QFont()
         list_font.setFamily('Yu Gothic')
-        list_font.setPixelSize(16)
+        list_font.setPixelSize(18)
 
         self.list_view = QListView()
-        self.list_view.setViewportMargins(8, 8, 8, 8)
         self.list_view.setSpacing(4)
         self.list_view.setFont(list_font)
         self.list_view.setSelectionMode(QListView.SelectionMode.SingleSelection)
@@ -94,3 +94,13 @@ class ChooseExampleSentenceDialog(QDialog):
 
     def reject(self):
         super().reject()
+
+# Lets the user choose which example sentence they want to add to the note
+def choose_example_sentence(parent: QWidget, note: Note, word_field: str, sentence_field: str):
+    if not can_fill_note(note, word_field, sentence_field):
+        return
+
+    dialog = ChooseExampleSentenceDialog(note[word_field], parent)
+    if dialog.exec():
+        note[sentence_field] = dialog.sentence
+        update_note(parent=parent, note=note).run_in_background()
