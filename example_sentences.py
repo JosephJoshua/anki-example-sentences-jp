@@ -9,6 +9,26 @@ from anki.utils import htmlToTextLine
 
 YOUREI_URL = 'https://yourei.jp'
 
+def get_soup_instance(word: str):
+    word_escaped = urllib.parse.quote_plus(word.encode('utf-8'))
+
+    page = requests.get(urllib.parse.urljoin(YOUREI_URL, word_escaped))
+    soup = BeautifulSoup(page.content, 'html.parser')
+
+    return soup
+
+def get_first_sentence_from_page(soup: BeautifulSoup) -> str:
+    sentence = soup.select_one('#sentence-1 > .the-sentence')
+
+    if sentence is None:
+        return '-'
+
+    # Remove all the furigana from the text
+    for furigana in sentence.find_all('rt'):
+        furigana.decompose()
+
+    return sentence.text
+
 def get_all_sentences_from_page(soup: BeautifulSoup) -> List[str]:
     sentence_list = soup.select_one('.sentence-list')
     if sentence_list is None:
@@ -31,26 +51,6 @@ def get_all_sentences_from_page(soup: BeautifulSoup) -> List[str]:
         sentences.append(the_sentence.text)
 
     return sentences
-
-def get_first_sentence_from_page(soup: BeautifulSoup) -> str:
-    sentence = soup.select_one('#sentence-1 > .the-sentence')
-
-    if sentence is None:
-        return '-'
-
-    # Remove all the furigana from the text
-    for furigana in sentence.find_all('rt'):
-        furigana.decompose()
-
-    return sentence.text
-
-def get_soup_instance(word: str):
-    word_escaped = urllib.parse.quote_plus(word.encode('utf-8'))
-
-    page = requests.get(urllib.parse.urljoin(YOUREI_URL, word_escaped))
-    soup = BeautifulSoup(page.content, 'html.parser')
-
-    return soup
 
 def can_fill_note(note: Note, word_field: str, sentence_field: str) -> bool:
     if not word_field or not sentence_field:

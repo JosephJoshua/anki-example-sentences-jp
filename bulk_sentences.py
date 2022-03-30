@@ -8,10 +8,10 @@ from aqt.qt import *
 from .utils import *
 from .example_sentences import fill_note
 
-ACTION_NAME = 'Bulk-add Example Sentences'
+_ACTION_NAME = 'Bulk-add Example Sentences'
 
 def show_confirmation_dialog(note_count: int, browser: Browser):
-    reply = QMessageBox.question(browser, ACTION_NAME, f'Are you sure you want to generate example sentences for {note_count} notes?')
+    reply = QMessageBox.question(browser, _ACTION_NAME, f'Are you sure you want to generate example sentences for {note_count} notes?')
     return reply == QMessageBox.StandardButton.Yes
 
 def show_success_dialog(note_count: int):
@@ -39,7 +39,7 @@ def show_success_dialog(note_count: int):
     icon = QIcon()
     icon.addPixmap(QPixmap(":/icons/anki.png"), QIcon.Normal, QIcon.Off)
 
-    dialog.setWindowTitle(ACTION_NAME)
+    dialog.setWindowTitle(_ACTION_NAME)
     dialog.setWindowIcon(icon)
     dialog.setLayout(layout)
     dialog.exec()
@@ -52,7 +52,7 @@ def generate_sentences(selected_nids: Sequence, browser: Browser):
     def do(col: Collection):
         changed_notes = []
         note_index = 0
-
+            
         for nid in selected_nids:
             fields = get_fields_from_note_type(mw.col.get_note(nid))
 
@@ -86,7 +86,7 @@ def generate_sentences(selected_nids: Sequence, browser: Browser):
 
 def add_menu_items(browser: Browser):
     # Creates a menu item and adds it under the 'Edit' category
-    action = QAction(ACTION_NAME, browser)
+    action = QAction(_ACTION_NAME, browser)
     qconnect(action.triggered, lambda: generate_sentences(browser.selected_notes(), browser))
     browser.form.menuEdit.addAction(action)
 
