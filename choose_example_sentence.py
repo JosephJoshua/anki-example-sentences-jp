@@ -1,6 +1,8 @@
+from aqt import colors
 from aqt.browser.browser import Browser
 from aqt.operations import QueryOp
 from aqt.operations.note import update_note
+from aqt.theme import theme_manager
 from aqt.qt import *
 from PyQt5 import QtCore
 
@@ -26,7 +28,7 @@ class ChooseExampleSentenceDialog(QDialog):
 
         # Layout
         self.layout = QVBoxLayout()
-        self.layout.setContentsMargins(12, 18, 12, 12)
+        self.layout.setContentsMargins(12, 18, 18, 12)
         self.layout.setSpacing(16)
 
         # Heading text
@@ -49,6 +51,27 @@ class ChooseExampleSentenceDialog(QDialog):
         self.list_view.setSpacing(4)
         self.list_view.setFont(list_font)
         self.list_view.setSelectionMode(QListView.SelectionMode.SingleSelection)
+
+        style = '''
+            QListView {{
+                outline: none;
+            }}
+
+            QListView::item {{
+                border-bottom: 1px solid grey;
+                padding: 8px;
+            }}
+
+            QListView::item::selected {{
+                background-color: {};
+                color: {};
+            }}
+        '''.format(\
+            '#529bc7' if theme_manager.night_mode else 'rgba(150, 150, 150, 50)',\
+            theme_manager.color(colors.HIGHLIGHT_FG) if theme_manager.night_mode else 'black'\
+        )
+
+        self.list_view.setStyleSheet(style)
 
         self.list_model = self.load_list()
         self.list_view.setModel(self.list_model)

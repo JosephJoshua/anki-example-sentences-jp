@@ -28,7 +28,7 @@ def shortcut_keys_wrapped(self, _old):
 
     return shortcuts
 
-# Shows up when you click the 'More' button while reviewing
+# Shows up when you click on the 'More' button while reviewing
 def context_menu_wrapped(self, _old):
     opts = _old(self)
 
