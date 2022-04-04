@@ -48,6 +48,8 @@ class ChooseExampleSentenceDialog(QDialog):
         list_font.setPixelSize(18)
 
         self.list_view = QListView()
+        self.list_model = self.load_list()
+        
         self.list_view.setSpacing(4)
         self.list_view.setFont(list_font)
         self.list_view.setSelectionMode(QListView.SelectionMode.SingleSelection)
@@ -72,8 +74,6 @@ class ChooseExampleSentenceDialog(QDialog):
         )
 
         self.list_view.setStyleSheet(style)
-
-        self.list_model = self.load_list()
         self.list_view.setModel(self.list_model)
 
         self.layout.addWidget(self.list_view)
