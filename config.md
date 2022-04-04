@@ -14,4 +14,4 @@ _Anki needs to be restarted for changes to be applied._
   Words that should be skipped when adding furigana (comma-separated).
 
 - `fields`.
-  Tells the addon which note types and their respective word and sentence fields to add furigana too.
+  Tells the addon which note types and their respective word and sentence fields to add furigana too. Also indicates whether or not the addon should automatically generate example sentences whenever a new note is added with that note type.

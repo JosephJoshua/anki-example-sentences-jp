@@ -4,6 +4,7 @@
   "furigana_skip_words": "",
   "fields": [
     {
+      "auto_generate": true,
       "note_type": "test",
       "word": "Front",
       "sentence": "Sentence"

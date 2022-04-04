@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import requests
 import urllib.parse
 
+from anki.collection import Collection
+from anki.hooks import wrap
 from anki.notes import Note
 from anki.utils import htmlToTextLine
 from aqt import mw
@@ -86,3 +88,20 @@ def add_first_example_sentence(note: Note, word_field: str, sentence_field: str)
     note[sentence_field] = sentence
 
     return True
+
+def on_add_note(_col, note: Note, _deck_id):
+    fields = get_fields_from_note_type(note)
+    
+    if fields is None:
+        return
+
+    if fields['auto_generate'] is not True:
+        return
+
+    word_field = fields['word']
+    sentence_field = fields['sentence']
+
+    add_first_example_sentence(note, word_field, sentence_field)
+
+def init():
+    Collection.add_note = wrap(Collection.add_note, on_add_note, 'before')
