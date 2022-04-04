@@ -1,4 +1,4 @@
-## Anki Japanese Example Sentences
+## Japanese Example Sentences
 
 _Anki needs to be restarted for changes to be applied._
 
